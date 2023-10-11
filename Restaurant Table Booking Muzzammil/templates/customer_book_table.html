@@ -56,14 +56,6 @@
 			<th>Date</th>
 			<td><input type="date" min="{{ data['tomorrow'] }}" required="" class="form-control" name="date"></td>
 		</tr>
-		<tr>
-			<th>Meal Time</th>
-			<td><select name="meal"  class="btn btn-light dropdown-toggle">
-				{%for r in data['meal_time']%}
-				<option value="{{r['meal_time_id']}}">{{r['meal_time']}}</option>
-				{%endfor%}
-			</select></td>
-		</tr>
 		
 		<tr>
 			<td align="center" colspan="2"><input type="submit" name="submit" value="BOOK" class="btn btn-primary"></a></td>
@@ -84,7 +76,6 @@
 		<table class="table" style= "width: 1000px">
 			<tr>
 				<th>Seating</th>
-				<th>Meal Time</th>
 				<th>Table</th>
 				<th>Date</th>
 				<th>Status</th>
@@ -94,7 +85,6 @@
 			<tr>
 				
 				<td>{{r['Category']}}</td>
-				<td>{{r['meal_time']}}</td>
 				<td>{{r['Table_num']}}</td>
 				
 				<td>{{r['Date']}}</td>

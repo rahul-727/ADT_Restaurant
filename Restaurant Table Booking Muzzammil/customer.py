@@ -100,6 +100,7 @@ def book_table():
 	# cid=request.args['cid']
 	if "submit" in request.form:
 		cat=request.form['cat']
+		meal=request.form['meal']
 		table=request.form['table']
 		# menu=request.form['menu']
 		date=request.form['date']
@@ -120,8 +121,7 @@ def book_table():
 		else:
 			s="select * from tables where Table_id='%s'"%(table)
 			res3=select(s)
-		
-			q="insert into booking values(null,'%s','%s','%s','0','0','%s','%s','1')"%(session['cus'],cat,table,date)
+			q="insert into booking values(null,'%s','%s','%s','0','0','%s','0','%s','1')"%(session['cus'],cat,meal,table,date)	
 			insert(q)
 			q="update tables set Table_status='booked' where Table_id='%s'"%(res3[0]['Table_id'])
 			update(q)
@@ -166,7 +166,7 @@ def view_booked():
 	data['grantotal']=grantotal
 
 	
-	q="SELECT * FROM `booking` INNER JOIN `bookmenu` USING (`Booking_id`) INNER JOIN `extraservice_booked` USING (`Booking_id`) INNER JOIN `menu` ON `bookmenu`.`Menu_id`=`menu`.`Menu_id` INNER JOIN `extraservice` USING (`Extraservice_id`) inner join tables using (Table_id) inner join meal_time using (meal_time_id) where customer_id='%s' and booking.status='1' group by Bookmenu_id"%(session['cus'])
+	q="SELECT * FROM `booking` INNER JOIN `bookmenu` USING (`Booking_id`) INNER JOIN `extraservice_booked` USING (`Booking_id`) INNER JOIN `menu` ON `bookmenu`.`Menu_id`=`menu`.`Menu_id` INNER JOIN `extraservice` USING (`Extraservice_id`) inner join tables using (Table_id) where customer_id='%s' and booking.status='1' group by Bookmenu_id"%(session['cus'])
 	res=select(q)
 	data['view']=res
  
@@ -429,7 +429,7 @@ def makepayment():
 def viewbookednew():
     data={}
     id=request.args['bid']
-    q="SELECT * FROM `booking` INNER JOIN `bookmenu` USING (`Booking_id`) INNER JOIN `extraservice_booked` USING (`Booking_id`) INNER JOIN `menu` ON `bookmenu`.`Menu_id`=`menu`.`Menu_id` INNER JOIN `extraservice` USING (`Extraservice_id`) inner join tables using (Table_id) inner join meal_time using(meal_time_id) inner join category using (Category_id) where customer_id='%s' and booking.status='paid' and booking_id='%s' group by Bookmenu_id"%(session['cus'],id)
+    q="SELECT * FROM `booking` INNER JOIN `bookmenu` USING (`Booking_id`) INNER JOIN `extraservice_booked` USING (`Booking_id`) INNER JOIN `menu` ON `bookmenu`.`Menu_id`=`menu`.`Menu_id` INNER JOIN `extraservice` USING (`Extraservice_id`) inner join tables using (Table_id) inner join category using (Category_id) where customer_id='%s' and booking.status='paid' and booking_id='%s' group by Bookmenu_id"%(session['cus'],id)
     res=select(q)
     data['view']=res
     return render_template('view_booked_new.html',data=data)
@@ -439,7 +439,7 @@ def viewbookednew():
 def viewbill():
     data={}
     id=request.args['bid']
-    q="SELECT * FROM `booking` INNER JOIN `bookmenu` USING (`Booking_id`) INNER JOIN `extraservice_booked` USING (`Booking_id`) INNER JOIN `menu` ON `bookmenu`.`Menu_id`=`menu`.`Menu_id` INNER JOIN `extraservice` USING (`Extraservice_id`) inner join tables using (Table_id) inner join meal_time using (meal_time_id) inner join category using (Category_id) where customer_id='%s' and booking.status='paid' and booking_id='%s' group by Bookmenu_id"%(session['cus'],id)
+    q="SELECT * FROM `booking` INNER JOIN `bookmenu` USING (`Booking_id`) INNER JOIN `extraservice_booked` USING (`Booking_id`) INNER JOIN `menu` ON `bookmenu`.`Menu_id`=`menu`.`Menu_id` INNER JOIN `extraservice` USING (`Extraservice_id`) inner join tables using (Table_id) inner join category using (Category_id) where customer_id='%s' and booking.status='paid' and booking_id='%s' group by Bookmenu_id"%(session['cus'],id)
     res=select(q)
     data['view']=res
     # q="SELECT SUM(amount) as amount FROM `bookmenu` WHERE booking_id in (SELECT booking_id FROM `booking`WHERE customer_id='%s' AND booking.status='1')"%(session['cus'])
